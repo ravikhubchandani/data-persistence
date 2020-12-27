@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreEntities", "StoreEntities\StoreEntities.csproj", "{6DD72DB7-6572-4B94-AA73-AF23EA0F0E1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonStore", "JsonStore\JsonStore.csproj", "{03285FDD-A40D-4BD9-A7F6-4AE2B076BC11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{F51B2973-8997-40CD-BA2D-1D92B91B12AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6DD72DB7-6572-4B94-AA73-AF23EA0F0E1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DD72DB7-6572-4B94-AA73-AF23EA0F0E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DD72DB7-6572-4B94-AA73-AF23EA0F0E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DD72DB7-6572-4B94-AA73-AF23EA0F0E1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03285FDD-A40D-4BD9-A7F6-4AE2B076BC11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03285FDD-A40D-4BD9-A7F6-4AE2B076BC11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03285FDD-A40D-4BD9-A7F6-4AE2B076BC11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03285FDD-A40D-4BD9-A7F6-4AE2B076BC11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F51B2973-8997-40CD-BA2D-1D92B91B12AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F51B2973-8997-40CD-BA2D-1D92B91B12AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F51B2973-8997-40CD-BA2D-1D92B91B12AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F51B2973-8997-40CD-BA2D-1D92B91B12AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9FDC783B-24BA-4CF0-9E6E-62725FA62991}
+	EndGlobalSection
+EndGlobal
