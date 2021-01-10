@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Ravi Khubchandani</Authors>
+    <PackageId>LocalJsonStore</PackageId>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +14,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StoreEntities\StoreEntities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

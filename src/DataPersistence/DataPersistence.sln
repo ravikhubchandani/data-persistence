@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreEntities", "StoreEntities\StoreEntities.csproj", "{6DD72DB7-6572-4B94-AA73-AF23EA0F0E1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonStore", "JsonStore\JsonStore.csproj", "{03285FDD-A40D-4BD9-A7F6-4AE2B076BC11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonStore", "JsonStore\JsonStore.csproj", "{03285FDD-A40D-4BD9-A7F6-4AE2B076BC11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{F51B2973-8997-40CD-BA2D-1D92B91B12AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{F51B2973-8997-40CD-BA2D-1D92B91B12AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
