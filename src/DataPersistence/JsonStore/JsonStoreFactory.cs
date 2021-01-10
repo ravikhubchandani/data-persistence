@@ -1,16 +1,15 @@
-﻿using JsonStore;
-using StoreEntities;
+﻿using StoreEntities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Test
+namespace JsonStore
 {
-    public class StoreFactory
+    public class JsonStoreFactory
     {
         private readonly Dictionary<Type, object> _storeCache;
 
-        public StoreFactory()
+        public JsonStoreFactory()
         {
             _storeCache = new Dictionary<Type, object>();
         }

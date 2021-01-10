@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JsonStore;
+using System;
 
 namespace Test
 {
@@ -6,7 +7,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var factory = new StoreFactory();
+            var factory = new JsonStoreFactory();
 
             var animalStore = factory.GetStore<Animal>();
             var animals = animalStore.Get(true);
