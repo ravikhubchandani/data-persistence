@@ -3,16 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Ravi Khubchandani</Authors>
-    <PackageId>LocalJsonStore</PackageId>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <Version>1.1.1</Version>
-    <Description>Simple storage based on json files on local disk.
-See usage example here https://github.com/ravikhubchandani/data-persistence/blob/master/src/DataPersistence/Test/Program.cs</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>

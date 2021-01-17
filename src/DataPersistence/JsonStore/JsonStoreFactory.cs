@@ -14,10 +14,12 @@ namespace JsonStore
             _storeCache = new Dictionary<Type, object>();
         }
 
-        public IEntityStore<T> GetStore<T>(string entityStoreDirectory = @"%localappdata%\JsonStore") where T : IEntity
+        public IEntityStore<T> GetStore<T>(string entityStoreDirectory = null) where T : IEntity
         {
             if (!_storeCache.TryGetValue(typeof(T), out object store))
             {
+                if (string.IsNullOrWhiteSpace(entityStoreDirectory))
+                    entityStoreDirectory = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\JsonStore";
                 string entityName = typeof(T).FullName;
                 string entityStorePath = Path.Combine(entityStoreDirectory, entityName);
                 store = new BaseJsonStore<T>(entityStorePath);
