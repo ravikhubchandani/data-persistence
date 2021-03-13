@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using StoreEntities;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,17 @@ namespace EFCoreConnectorStore
     public class GenericRepository<T> : IEntityStore<T> where T : class, IEntity
     {
         protected readonly IDbContextFactory dbContextFactory;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public GenericRepository(IDbContextFactory ctxFactory)
         {
-            this.dbContextFactory = ctxFactory;
+            dbContextFactory = ctxFactory;
+        }
+
+        public GenericRepository(IDbContextFactory ctxFactory, IHttpContextAccessor httpContextAccessor)
+        {
+            dbContextFactory = ctxFactory;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public void Delete(int id)
@@ -35,7 +43,7 @@ namespace EFCoreConnectorStore
 
         public void DeleteAll()
         {
-            Delete(x => true);
+            Delete(x => !x.Deleted);
         }
 
         public void Delete(Func<T, bool> query)
@@ -56,7 +64,7 @@ namespace EFCoreConnectorStore
         private void SetAsDeleted(T item)
         {
             item.Deleted = true;
-            item.DeletedBy = string.Empty;
+            item.DeletedBy = GetUserName();
             item.DeletedOn = DateTime.Now;
         }
 
@@ -107,7 +115,7 @@ namespace EFCoreConnectorStore
                 foreach (var item in items)
                 {
                     item.UpdatedOn = DateTime.Now;
-                    item.UpdatedBy = string.Empty;
+                    item.UpdatedBy = GetUserName();
 
                     var dbItem = ctx.Set<T>().Find(item.Id);
                     if (dbItem == null)
@@ -129,6 +137,14 @@ namespace EFCoreConnectorStore
                 }
                 ctx.SaveChanges();
             }
+        }
+
+        private string GetUserName()
+        {
+            if (_httpContextAccessor != null)
+                return _httpContextAccessor.HttpContext.User.Identity.Name;
+            else
+                return $"{Environment.UserDomainName}.{Environment.UserName}";
         }
     }
 }
