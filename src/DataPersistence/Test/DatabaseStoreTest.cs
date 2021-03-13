@@ -1,11 +1,11 @@
 ﻿using EFCoreConnectorStore;
-using Microsoft.EntityFrameworkCore;
 using StoreEntities;
+using System;
 using Test.NewFolder;
 
 namespace Test
 {
-    public static class DatabaseStore
+    public static class DatabaseStoreTest
     {
         public static void Test()
         {
@@ -26,6 +26,24 @@ namespace Test
             IEntityStore<Person> personStore = new GenericRepository<Person>(dbCtxFactory);
             var me = new Person { Age = 30 };
             personStore.SaveOrUpdate(me);
+
+            var notClone = personStore.Get(me.Id);
+            notClone.Age = 18;
+            personStore.SaveOrUpdate(notClone);
+
+            try
+            {
+                me.Age = 17;
+                personStore.SaveOrUpdate(me);
+            }
+            catch (StaleDataException e)
+            {
+                // Message explains a more recent item exists (bigger Version number) so updating might lose data
+                Console.WriteLine(e.Message);
+            }
+
+            personStore.Delete(notClone);
+            personStore.DeleteAll();
 
             // This factory and store can be moved to dependency injectors
         }

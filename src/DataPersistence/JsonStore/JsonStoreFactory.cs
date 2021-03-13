@@ -14,7 +14,9 @@ namespace JsonStore
             _storeCache = new Dictionary<Type, object>();
         }
 
-        public IEntityStore<T> GetStore<T>(string entityStoreDirectory = null) where T : IEntity
+        /// <param name="keepMostRecentItem">If true, on item update will check if there is a more recent version for the same item Id.
+        /// If there is a more recent, item will not be update to prevent data loss</param>
+        public IEntityStore<T> GetStore<T>(string entityStoreDirectory = null, bool keepMostRecentItem = true) where T : IEntity
         {
             if (!_storeCache.TryGetValue(typeof(T), out object store))
             {
@@ -22,7 +24,7 @@ namespace JsonStore
                     entityStoreDirectory = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\JsonStore";
                 string entityName = typeof(T).FullName;
                 string entityStorePath = Path.Combine(entityStoreDirectory, entityName);
-                store = new BaseJsonStore<T>(entityStorePath);
+                store = new BaseJsonStore<T>(entityStorePath, keepMostRecentItem);
                 Directory.CreateDirectory(entityStorePath);
                 _storeCache.Add(typeof(T), store);
             }

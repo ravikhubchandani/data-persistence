@@ -10,16 +10,20 @@ namespace JsonStore
     public class BaseJsonStore<T> : IEntityStore<T> where T : IEntity
     {
         private readonly string _entityStorePath;
+        private readonly bool _keepMostRecentItem;
 
-        public BaseJsonStore(string entityStorePath)
+        /// <param name="keepMostRecentItem">If true, on item update will check if there is a more recent version for the same item Id.
+        /// If there is a more recent, item will not be update to prevent data loss</param>
+        public BaseJsonStore(string entityStorePath, bool keepMostRecentItem = true)
         {
             _entityStorePath = entityStorePath;
+            _keepMostRecentItem = keepMostRecentItem;
         }
 
         public virtual T Get(int id)
         {
-            string path = GetEntityFiles($"{id}.json").Single();
-            return DeserializeFromPath(path);
+            string path = GetEntityFiles($"{id}.json").SingleOrDefault();
+            return path == null ? default(T) : DeserializeFromPath(path);
         }
 
         public virtual IEnumerable<T> Get(Func<T, bool> query, bool includeDeleted = false)
@@ -80,10 +84,26 @@ namespace JsonStore
 
         public virtual void SaveOrUpdate(T item)
         {
-            if (item.Id == default(int))
-                item.Id = GetEntityFiles().Length + 1;
-            item.UpdatedBy = GetUserName();
             item.UpdatedOn = DateTime.Now;
+            item.UpdatedBy = GetUserName();
+
+            if (item.Id == default(int))
+            {
+                item.Id = GetEntityFiles().Length + 1;
+                item.Version = 1;
+            }
+            else
+            {
+                if (_keepMostRecentItem)
+                {
+                    var currentItem = Get(item.Id);
+                    if (currentItem.Version != item.Version)
+                        throw new StaleDataException($"Cannot overwrite {typeof(T).Name} with Id {item.Id}, version {item.Version}. Current version is {currentItem.Version}. Exception thrown to prevent data loss.");
+                }
+
+                item.Version += 1;
+            }
+                        
             SerializeToPath(item);
         }        
 

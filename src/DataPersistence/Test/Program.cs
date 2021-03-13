@@ -5,7 +5,7 @@
         static void Main(string[] args)
         {
             JsonStoreTest.Test();
-            DatabaseStore.Test();
+            DatabaseStoreTest.Test();
         }
     }
 }

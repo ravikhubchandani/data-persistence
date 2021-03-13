@@ -14,9 +14,9 @@ namespace Test
 
         public IEnumerable<Person> GetWithDependingObjects()
         {
-            using (var dbContext = dbContextFactory.GetDbContext())
+            using (var ctx = dbContextFactory.GetDbContext())
             {
-                var items = dbContext.Set<Person>();
+                var items = ctx.Set<Person>();
                     //.Include(x => x.Foo)
                     //.Include(x => x.Bar);
 
