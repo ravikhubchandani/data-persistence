@@ -9,6 +9,7 @@ namespace Test
     {
         public static void Test()
         {
+            // This factory and store can be moved to dependency injectors
             var factory = new JsonStoreFactory();
             var animalStore = factory.GetStore<Animal>();
             //var animalStore = factory.GetStore<Animal>(keepMostRecentItem: false);
@@ -35,10 +36,7 @@ namespace Test
                 Console.WriteLine(e.Message);
             }
 
-
             animalStore.Delete(myDog);
-
-            // This factory and store can be moved to dependency injectors
         }
 
     }
