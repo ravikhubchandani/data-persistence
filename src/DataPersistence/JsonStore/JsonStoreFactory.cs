@@ -21,7 +21,7 @@ namespace JsonStore
             if (!_storeCache.TryGetValue(typeof(T), out object store))
             {
                 if (string.IsNullOrWhiteSpace(entityStoreDirectory))
-                    entityStoreDirectory = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\JsonStore";
+                    entityStoreDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "JsonStore");
                 string entityName = typeof(T).FullName;
                 string entityStorePath = Path.Combine(entityStoreDirectory, entityName);
                 store = new BaseJsonStore<T>(entityStorePath, keepMostRecentItem);
