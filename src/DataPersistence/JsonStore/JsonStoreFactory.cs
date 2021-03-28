@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace JsonStore
 {
     public class JsonStoreFactory
     {
         private readonly Dictionary<Type, object> _storeCache;
+        public string EntityStoreDirectory { get; private set; }
 
         public JsonStoreFactory()
         {
@@ -20,12 +22,14 @@ namespace JsonStore
         {
             if (!_storeCache.TryGetValue(typeof(T), out object store))
             {
-                if (string.IsNullOrWhiteSpace(entityStoreDirectory))
-                    entityStoreDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "JsonStore");
+                EntityStoreDirectory = string.IsNullOrWhiteSpace(entityStoreDirectory) ?
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "JsonStore", Assembly.GetCallingAssembly().GetName().Name) :
+                    entityStoreDirectory;
+
                 string entityName = typeof(T).FullName;
-                string entityStorePath = Path.Combine(entityStoreDirectory, entityName);
-                store = new BaseJsonStore<T>(entityStorePath, keepMostRecentItem);
-                Directory.CreateDirectory(entityStorePath);
+                EntityStoreDirectory = Path.Combine(EntityStoreDirectory, entityName);
+                store = new BaseJsonStore<T>(EntityStoreDirectory, keepMostRecentItem);
+                Directory.CreateDirectory(EntityStoreDirectory);
                 _storeCache.Add(typeof(T), store);
             }
             return (IEntityStore<T>)store;

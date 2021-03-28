@@ -17,7 +17,7 @@ namespace Test
             var myDog = new Animal { Name = "Johnson" };
             animalStore.SaveOrUpdate(myDog);
 
-            Console.WriteLine($"{myDog.Name}'s ID: {myDog.Id}");
+            Console.WriteLine($"{myDog.Name}'s ID: {myDog.Id}, path: {factory.EntityStoreDirectory}");
 
 
             var notClone = animalStore.Get(myDog.Id);
