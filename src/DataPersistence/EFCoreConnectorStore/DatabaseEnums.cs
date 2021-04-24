@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EFCoreConnectorStore
+﻿namespace EFCoreConnectorStore
 {
     public enum DatabaseEnums
     {
         SQLITE,
-        SQLSERVER
+        SQLSERVER,
+        POSTGRESQL
     }
 }

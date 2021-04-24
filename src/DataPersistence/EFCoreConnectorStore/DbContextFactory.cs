@@ -23,6 +23,9 @@ namespace EFCoreConnectorStore
                 case DatabaseEnums.SQLSERVER:
                     optBuilder.UseSqlServer(connectionString);
                     break;
+                case DatabaseEnums.POSTGRESQL:
+                    optBuilder.UseNpgsql(connectionString);
+                    break;
             }
             _options = optBuilder.Options;
         }
