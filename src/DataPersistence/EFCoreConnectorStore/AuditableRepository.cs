@@ -7,23 +7,20 @@ using System.Linq;
 
 namespace EFCoreConnectorStore
 {
-    public class GenericRepository<T> : IEntityStore<T> where T : class, IEntity
+    public class AuditableRepository<T> : EntityRepository<T> where T : class, IAuditableEntity
     {
-        protected readonly IDbContextFactory dbContextFactory;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GenericRepository(IDbContextFactory ctxFactory)
+        public AuditableRepository(IDbContextFactory ctxFactory) : base(ctxFactory)
         {
-            dbContextFactory = ctxFactory;
         }
 
-        public GenericRepository(IDbContextFactory ctxFactory, IHttpContextAccessor httpContextAccessor)
+        public AuditableRepository(IDbContextFactory ctxFactory, IHttpContextAccessor httpContextAccessor) : base(ctxFactory)
         {
-            dbContextFactory = ctxFactory;
-            _httpContextAccessor = httpContextAccessor;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
-        public void Delete(int id)
+        public override void Delete(int id)
         {
             T item = null;
             using (var ctx = dbContextFactory.GetDbContext())
@@ -35,18 +32,18 @@ namespace EFCoreConnectorStore
             Delete(item);
         }
 
-        public void Delete(T item)
+        public override void Delete(T item)
         {
             SetAsDeleted(item);
             SaveOrUpdate(item);
         }
 
-        public void DeleteAll()
+        public override void DeleteAll()
         {
             Delete(x => !x.Deleted);
         }
 
-        public void Delete(Func<T, bool> query)
+        public override void Delete(Func<T, bool> query)
         {
             List<T> items = null;
 
@@ -68,42 +65,29 @@ namespace EFCoreConnectorStore
             item.DeletedOn = DateTime.Now;
         }
 
-        public T Get(int id)
-        {
-            using (var ctx = dbContextFactory.GetDbContext())
-            {
-                return ctx.Set<T>().Find(id);
-            }
-        }
-
-        public IEnumerable<T> Get(Func<T, bool> query, bool includeDeleted = false)
+        public override IEnumerable<T> Get(Func<T, bool> query)
         {
             using (var ctx = dbContextFactory.GetDbContext())
             {
                 var items = ctx.Set<T>().Where(query);
-                if (!includeDeleted)
-                    items = items.Where(x => !x.Deleted);
                 return items.ToList();
             }
         }
 
-        public IEnumerable<T> Get(bool includeDeleted = false)
+        public override IEnumerable<T> Get()
         {
             using (var ctx = dbContextFactory.GetDbContext())
             {
-                if (includeDeleted)
-                    return ctx.Set<T>().ToList();
-                else
-                    return ctx.Set<T>().Where(x => !x.Deleted).ToList();
+                return ctx.Set<T>().Where(x => !x.Deleted).ToList();
             }
         }
 
-        public void SaveOrUpdate(IEnumerable<T> items)
+        public override void SaveOrUpdate(IEnumerable<T> items)
         {
             SaveOrUpdateMultiple(items.ToArray());
         }
 
-        public void SaveOrUpdate(T item)
+        public override void SaveOrUpdate(T item)
         {
             SaveOrUpdateMultiple(item);
         }
@@ -129,7 +113,7 @@ namespace EFCoreConnectorStore
                             throw new StaleDataException($"Cannot overwrite {typeof(T).Name} with Id {item.Id}, version {item.Version}. Current version is {dbItem.Version}. Exception thrown to prevent data loss.");
 
                         item.Version += 1;
-                        
+
                         ctx.Entry(dbItem).State = EntityState.Detached;
                         ctx.Entry(item).State = EntityState.Modified;
                         ctx.Set<T>().Update(item);

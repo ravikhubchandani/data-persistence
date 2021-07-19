@@ -6,7 +6,7 @@ using Test.NewFolder;
 
 namespace Test
 {
-    public class ExtendedRepo : GenericRepository<Person>
+    public class ExtendedRepo : AuditableRepository<Person>
     {
         public ExtendedRepo(IDbContextFactory dbContextFactory) : base(dbContextFactory)
         {

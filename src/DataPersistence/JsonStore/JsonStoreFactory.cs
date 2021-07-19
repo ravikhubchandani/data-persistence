@@ -18,21 +18,37 @@ namespace JsonStore
 
         /// <param name="keepMostRecentItem">If true, on item update will check if there is a more recent version for the same item Id.
         /// If there is a more recent, item will not be update to prevent data loss</param>
-        public IEntityStore<T> GetStore<T>(string entityStoreDirectory = null, bool keepMostRecentItem = true) where T : IEntity
+        public IEntityStore<T> GetAuditableStore<T>(string entityStoreDirectory = null, bool keepMostRecentItem = true) where T : IAuditableEntity
         {
             if (!_storeCache.TryGetValue(typeof(T), out object store))
             {
-                EntityStoreDirectory = string.IsNullOrWhiteSpace(entityStoreDirectory) ?
-                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "JsonStore", Assembly.GetCallingAssembly().GetName().Name) :
-                    entityStoreDirectory;
-
-                string entityName = typeof(T).FullName;
-                EntityStoreDirectory = Path.Combine(EntityStoreDirectory, entityName);
-                store = new BaseJsonStore<T>(EntityStoreDirectory, keepMostRecentItem);
-                Directory.CreateDirectory(EntityStoreDirectory);
+                EntityStoreDirectory = GetStoreDirectory<T>(entityStoreDirectory);
+                store = new AuditableJsonStore<T>(EntityStoreDirectory, keepMostRecentItem);
                 _storeCache.Add(typeof(T), store);
             }
             return (IEntityStore<T>)store;
+        }
+
+        public IEntityStore<T> GetEntityStore<T>(string entityStoreDirectory = null) where T : IEntity
+        {
+            if (!_storeCache.TryGetValue(typeof(T), out object store))
+            {
+                EntityStoreDirectory = GetStoreDirectory<T>(entityStoreDirectory);
+                store = new EntityJsonStore<T>(EntityStoreDirectory);                
+                _storeCache.Add(typeof(T), store);
+            }
+            return (IEntityStore<T>)store;
+        }
+
+        private string GetStoreDirectory<T>(string entityStoreDirectory = null)
+        {
+            var dir = string.IsNullOrWhiteSpace(entityStoreDirectory) ?
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "JsonStore", Assembly.GetCallingAssembly().GetName().Name) :
+                entityStoreDirectory;
+            string entityName = typeof(T).FullName;
+            dir = Path.Combine(dir, entityName);
+            Directory.CreateDirectory(dir);
+            return dir;
         }
 
         public void SetStore<T>(IEntityStore<T> store) where T : IEntity

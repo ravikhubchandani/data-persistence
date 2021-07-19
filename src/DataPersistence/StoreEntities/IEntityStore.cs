@@ -5,8 +5,8 @@ namespace StoreEntities
 {
     public interface IEntityStore<T> where T : IEntity
     {
-        IEnumerable<T> Get(bool includeDeleted = false);
-        IEnumerable<T> Get(Func<T, bool> query, bool includeDeleted = false);
+        IEnumerable<T> Get();
+        IEnumerable<T> Get(Func<T, bool> query);
         T Get(int id);
         void SaveOrUpdate(T item);
         void SaveOrUpdate(IEnumerable<T> items);

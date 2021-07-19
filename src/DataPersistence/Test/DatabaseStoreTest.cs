@@ -22,8 +22,12 @@ namespace Test
             var dbCtxFactory = new DbContextFactory<testContext>(optBuilder.Options);*/
 
             // Option 2 - Pass connection string
-            var dbCtxFactory = new DbContextFactory<testContext>(DatabaseEnums.POSTGRESQL, "User ID=postgres;Password=secret;Server=localhost;Port=5432;Database=test;Integrated Security = true;Pooling = true");
-            IEntityStore<Person> personStore = new GenericRepository<Person>(dbCtxFactory, httpContextAccessor: null);
+            //var dbCtxFactory = new DbContextFactory<testContext>(DatabaseEnums.POSTGRESQL, "User ID=postgres;Password=secret;Server=localhost;Port=5432;Database=test;Integrated Security = true;Pooling = true");
+            var dbCtxFactory = new DbContextFactory<testContext>(DatabaseEnums.SQLITE, "DataSource=test.db");
+            //IEntityStore<Person> personStore = new AuditableRepository<Person>(dbCtxFactory, httpContextAccessor: null);
+
+            // Entity repository does physical delete and also does not have audit fields (updatedby, deletedon, ..)
+            IEntityStore<Person> personStore = new EntityRepository<Person>(dbCtxFactory);
             // This factory and store can be moved to dependency injectors
 
             var me = new Person { Age = 30 };

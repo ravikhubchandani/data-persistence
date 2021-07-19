@@ -11,9 +11,9 @@ namespace Test
         {
             // This factory and store can be moved to dependency injectors
             var factory = new JsonStoreFactory();
-            var animalStore = factory.GetStore<Animal>();
+            var animalStore = factory.GetAuditableStore<Animal>();
             //var animalStore = factory.GetStore<Animal>(keepMostRecentItem: false);
-            var animals = animalStore.Get(true);
+            var animals = animalStore.Get();
             var myDog = new Animal { Name = "Johnson" };
             animalStore.SaveOrUpdate(myDog);
 

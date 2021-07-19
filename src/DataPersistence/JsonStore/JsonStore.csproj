@@ -6,7 +6,7 @@
     <Authors>Ravi Khubchandani</Authors>
     <PackageId>LocalJsonStore</PackageId>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <Version>1.2.2</Version>
+    <Version>2.0.0</Version>
     <Description>Simple storage based on json files on local disk.
 See usage example here https://github.com/ravikhubchandani/data-persistence/blob/master/src/DataPersistence/Test/JsonStoreTest.cs</Description>
   </PropertyGroup>
